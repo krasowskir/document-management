@@ -1,0 +1,24 @@
+<configuration>
+    <appender name="richOut" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] [%X{X-Correlation-Id}] %yellow(%C{1}): %msg%n%throwable</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.richard.home" level="debug">
+        <appender-ref ref="richOut" />
+    </logger>
+
+    <logger name="org.eclipse.jetty" level="info">
+        <appender-ref ref="richOut" />
+    </logger>
+
+    <logger name="org.postgresql" level="info">
+        <appender-ref ref="richOut" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="richOut" />
+    </root>
+
+</configuration>

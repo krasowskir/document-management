@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.richard.home</groupId>
-  <artifactId>dynamic-proxy</artifactId>
+  <artifactId>document-management</artifactId>
   <packaging>war</packaging>
   <version>1.0</version>
 
-  <name>dynamic-proxy</name>
+  <name>document-management</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
