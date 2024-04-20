@@ -1,0 +1,35 @@
+Dokumentenverwaltung
+========================
+
+features:
+  - Einscannen der Dokumente
+  - Einlesen der scans als Objekte mit Eigenschaften
+  - Abspeichern der Objekte in der DB
+  - Abrufen/Abfragen der Dokumente über Rest-Schnittstelle
+  - automatisierter job der nach Einscannen staret und die Erkennung der Dokumente einleitet
+  - Berechnungsmodul
+
+Nutzerziele:
+  - Kalender mit nächsten Abgasuntersuchungen/Reparaturen
+  - Digitale Handhabung und Aufbewahrung der Reparaturdokumente als Nachweise
+  - Kostenberechnung Analyse & graf Darstellung der Kosten
+  - einfache & automatisierte Verwaltung der Reparaturnachweise durch Einscannen
+
+========================
+Mieterbenachrichtigung
+========================
+
+features:
+  - Registrierung: (über Adressfindung, Brieferreichung mit QR code)
+    - der Bewohner eines Hauses(über QR code) (anonymer Room)
+    - der Eigentümer zur Nebenkostenabrechnung
+    - der Hausverwaltung
+  - Benachrichtigung der Bewohner über Ereignisse im Haus, Informationen für Mieter
+  - Kalenderansicht über Wartung und Reparatur
+  - Kommunikation von Hausverwaltung -> Mieter
+    - über Müllabholung, Gartenpflege, Kabelanschluss
+    - Dokumentenablage und Verwaltung
+    - Kostenüberblick und Darstellung
+  - Kommunikation von Mieter -> Hausverwaltung
+    - Reparaturen von Türen und Schlossanlagen
+    - Ereignisse & Vorfälle
