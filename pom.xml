@@ -42,12 +42,6 @@
       <version>1.7.36</version>
     </dependency>
 
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>3.3.0</version>
-    </dependency>
-
     <!--    jetty servlet-->
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -64,23 +58,6 @@
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-webapp</artifactId>
       <version>11.0.20</version>
-    </dependency>
-
-    <!--      hibernate validation-->
-    <dependency>
-      <groupId>jakarta.validation</groupId>
-      <artifactId>jakarta.validation-api</artifactId>
-      <version>3.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.validator</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <version>8.0.1.Final</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.expressly</groupId>
-      <artifactId>expressly</artifactId>
-      <version>5.0.0</version>
     </dependency>
 
     <!--    spring IoC container-->
@@ -123,7 +100,6 @@
     </dependency>
 
     <!--    jackson object mapper-->
-    <!--        jackson objectMapper-->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
