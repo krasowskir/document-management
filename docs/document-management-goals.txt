@@ -3,6 +3,7 @@ Dokumentenverwaltung
 
 features:
   - Einscannen der Dokumente
+    - Ableiten der allgemeinen Informationen (Datum, GesamtKosten, Unterschrift)
   - Einlesen der scans als Objekte mit Eigenschaften
   - Abspeichern der Objekte in der DB
   - Abrufen/Abfragen der Dokumente über Rest-Schnittstelle
@@ -25,6 +26,10 @@ features:
     - der Eigentümer zur Nebenkostenabrechnung
     - der Hausverwaltung
   - Benachrichtigung der Bewohner über Ereignisse im Haus, Informationen für Mieter
+  - Abrufen/Anzeigen der Informationen über das Objekt (Energieausweis, Baujahr, Hausverwaltung Adressdaten)
+  - Anzeige der Dokumente für den Mieter
+    - Status der Bearbeitung/Prüfung auf Sichtung der Dokumente ==> Statusanzeige/leiste der Bearbeitung
+    - PDF Darstellung bzw Zoom der Dokumente
   - Kalenderansicht über Wartung und Reparatur
   - Kommunikation von Hausverwaltung -> Mieter
     - über Müllabholung, Gartenpflege, Kabelanschluss
@@ -33,3 +38,11 @@ features:
   - Kommunikation von Mieter -> Hausverwaltung
     - Reparaturen von Türen und Schlossanlagen
     - Ereignisse & Vorfälle
+
+
+Dokumentarten:
+  Vermieter -> Mieter
+    - Mietschuldenfreiheitsbescheinigung
+    - Nebenkostenauskunft
+    - Übergabeprotokoll
+    - Mietvertrag

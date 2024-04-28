@@ -1,12 +1,16 @@
 package org.richard.home;
 
 
+import jakarta.servlet.MultipartConfigElement;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.ServletsConfiguration;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebXmlConfiguration;
 import org.richard.home.config.AppConfig;
 import org.richard.home.config.GeneralConfiguration;
+import org.richard.home.web.DocumentServlet;
 import org.richard.home.web.PlayerServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +47,12 @@ public class App {
         appContext.refresh();
 
         // initialize start Spring context
-        context.addConfiguration();
         context.addEventListener(new ContextLoaderListener(appContext));
         context.addServlet(PlayerServlet.class, "/player/*");
+        context.addServlet(DocumentServlet.class, "/document/*")
+                .getRegistration()
+                .setMultipartConfig(new MultipartConfigElement("my-uploads"));
+
         context.setWar("target/document-management-1.0.war");
         context.setContextPath("/api");
 

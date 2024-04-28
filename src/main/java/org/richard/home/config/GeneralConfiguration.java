@@ -1,5 +1,13 @@
 package org.richard.home.config;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.internal.MongoClientImpl;
+import com.mongodb.spi.dns.DnsClient;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.SharedCacheMode;
@@ -23,6 +31,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 
+import static java.lang.String.format;
 import static java.sql.Connection.TRANSACTION_SERIALIZABLE;
 import static org.hibernate.cfg.AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS;
 import static org.hibernate.cfg.JdbcSettings.ISOLATION;
@@ -32,7 +41,7 @@ import static org.hibernate.cfg.PersistenceSettings.*;
 @Configuration
 public class GeneralConfiguration {
     private static final Logger log = LoggerFactory.getLogger(GeneralConfiguration.class);
-    private final static String HOST, PORT, USERNAME, PASSWORD, DATABASE_NAME;
+    private final static String HOST, PORT, USERNAME, PASSWORD, DATABASE_NAME, MONGO_HOST, MONGO_PORT, MONGO_DB_NAME, MONGO_USERNAME, MONGO_PASSWORD;
 
     static {
         Properties props = new Properties();
@@ -50,6 +59,12 @@ public class GeneralConfiguration {
         USERNAME = props.getProperty("database.db.username");
         PASSWORD = props.getProperty("database.db.password");
         DATABASE_NAME = props.getProperty("database.db.database_name");
+
+        MONGO_HOST = props.getProperty("mongo.db.host");
+        MONGO_PORT = props.getProperty("mongo.db.port");
+        MONGO_DB_NAME = props.getProperty("mongo.db.name");
+        MONGO_USERNAME = props.getProperty("mongo.db.username");
+        MONGO_PASSWORD = props.getProperty("mongo.db.password");
     }
 
     public GeneralConfiguration() {
@@ -75,6 +90,18 @@ public class GeneralConfiguration {
         dataSource.setAutoCommit(false);
         log.info("configuration: url {}, username: {}", jdbcUrl, USERNAME);
         return dataSource;
+    }
+
+    @Bean
+    public MongoClient mongoClient(){
+
+        return MongoClients.create(
+                MongoClientSettings.builder()
+                        .applyConnectionString(
+                                new ConnectionString(
+                                        format("mongodb://%s:%s@%s:%s/%s", MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOST, MONGO_PORT, MONGO_DB_NAME)))
+                        .build()
+        );
     }
 
     @Bean

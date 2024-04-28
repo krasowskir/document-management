@@ -28,3 +28,32 @@ Server: Jetty(11.0.20)
 
 get age of me: 32 
 ```
+
+upload document:
+```
+curl -i -XPOST http://localhost:8080/api/document -T /Users/rkrasowski/uebung_workspace/document-management/README.md
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Date: Sat, 27 Apr 2024 08:46:42 GMT
+Content-Length: 0
+Server: Jetty(11.0.20)
+
+Alternative:
+curl -i -XPOST http://localhost:8080/api/document -F testFile=@/Users/rkrasowski/uebung_workspace/document-management/tikataka.txt
+```
+
+
+mongofiles:
+=======
+```
+./mongofiles -v --uri mongodb://192.168.0.11:27017/test list --prefix documents
+./mongofiles -v --uri mongodb://192.168.0.11:27017/test get testfile.txt --prefix documents
+```
+
+mongosh:
+=======
+```
+use test
+db.documents.files.find()
+```
