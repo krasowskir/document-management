@@ -1,4 +1,4 @@
-package org.richard.home;
+package org.richard.home.service;
 
 import java.util.Objects;
 
