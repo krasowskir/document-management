@@ -27,6 +27,22 @@ Content-Length: 19
 Server: Jetty(11.0.20)
 
 get age of me: 32 
+
+nc -l localhost 8080
+POST /api/document HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/7.79.1
+Accept: */*
+Content-Length: 211
+Content-Type: multipart/form-data; boundary=------------------------9dd36b0576a69928
+
+--------------------------9dd36b0576a69928
+Content-Disposition: form-data; name="testFile"; filename="tikataka.txt"
+Content-Type: text/plain
+
+Richard is best!
+
+--------------------------9dd36b0576a69928--
 ```
 
 upload document:
@@ -49,6 +65,7 @@ mongofiles:
 ```
 ./mongofiles -v --uri mongodb://192.168.0.11:27017/test list --prefix documents
 ./mongofiles -v --uri mongodb://192.168.0.11:27017/test get testfile.txt --prefix documents
+mongofiles -v --uri mongodb://192.168.0.11:27017/test delete --prefix documents 'tikataka.txt'
 ```
 
 mongosh:

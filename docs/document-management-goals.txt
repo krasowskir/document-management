@@ -8,6 +8,8 @@ features:
   - Abspeichern der Objekte in der DB
   - Abrufen/Abfragen der Dokumente über Rest-Schnittstelle
   - automatisierter job der nach Einscannen staret und die Erkennung der Dokumente einleitet
+  - automatische Klassifizierung und Gruppierung der Dokumente (Versicherung, Finanzen, Haus, Job, Gehaltsnachweise...)
+    - Klassifizierung nach zuvor erstellten Kriterien (Schemata) gemäß Schlüsselwörtern
   - Berechnungsmodul
 
 Nutzerziele:
