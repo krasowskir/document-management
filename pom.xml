@@ -128,12 +128,6 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.rest-assured</groupId>
-                    <artifactId>xml-path</artifactId>
-                </exclusion>
-            </exclusions>
             <scope>test</scope>
         </dependency>
 
@@ -236,6 +230,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.2.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -268,7 +271,65 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>11.0.21</version>
+                <executions>
+                    <execution>
+                        <id>Hochfahren der Container für integrationstests mit jetty und restAssured</id>
+                        <goals>
+                            <goal>start-war</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <deployMode>EMBED</deployMode>
+                            <stopKey>jettyStop</stopKey>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Herunterfahren der Container</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                        <configuration>
+                            <stopPort>8081</stopPort>
+                            <stopKey>jettyStop</stopKey>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>debugJetty</id>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.eclipse.jetty</groupId>-->
+<!--                        <artifactId>jetty-maven-plugin</artifactId>-->
+<!--                        <version>11.0.21</version>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>meinStart</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>start-war</goal>-->
+<!--                                </goals>-->
+<!--                                <configuration>-->
+<!--                                    <systemProperties>-->
+<!--                                        <property>-->
+<!--                                            <name>-Xdebug</name>-->
+<!--                                            <value>true</value>-->
+<!--                                        </property>-->
+<!--                                        <property>-->
+<!--                                            <name>-agentlib</name>-->
+<!--                                            <value>jdwp=transport=dt_socket,address=7005,server=y,suspend=n</value>-->
+<!--                                        </property>-->
+<!--                                    </systemProperties>-->
+<!--                                </configuration>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 </project>

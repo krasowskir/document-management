@@ -1,6 +1,8 @@
 package org.richard.home.web;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import jakarta.servlet.http.Part;
 import org.richard.home.service.DocumentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,13 +18,15 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@MultipartConfig
+@WebServlet(value = {"/api/documents/*"})
 public class DocumentServlet extends HttpServlet {
 
     private static Logger log = LoggerFactory.getLogger(DocumentServlet.class);
 
     private DocumentService documentService;
     Function<Part, String> extractFileNameFromHeader = elem ->
-           Arrays.stream(elem.getHeader("Content-Disposition")
+            Arrays.stream(elem.getHeader("Content-Disposition")
                             .split(";"))
                     .filter(token -> token.contains("filename"))
                     .findFirst().get()
@@ -32,7 +37,7 @@ public class DocumentServlet extends HttpServlet {
 
     @Override
     public void init() {
-        this.documentService = (DocumentService) this.getServletContext().getAttribute("documentService");
+        this.documentService = ((AnnotationConfigWebApplicationContext) this.getServletContext().getAttribute("applicationContext")).getBean(DocumentService.class);
     }
 
     @Override
@@ -51,7 +56,7 @@ public class DocumentServlet extends HttpServlet {
                     .map(elem -> {
                                 try {
                                     return documentService.uploadDocument(elem.getInputStream(),
-                                                    extractFileNameFromHeader.apply(elem));
+                                            extractFileNameFromHeader.apply(elem));
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

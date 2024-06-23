@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import static java.lang.String.format;
-import static org.junit.jupiter.api.Assertions.*;
 class GeneralConfigurationTest {
 
     @Test
