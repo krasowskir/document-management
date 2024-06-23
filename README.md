@@ -59,6 +59,11 @@ Alternative:
 curl -i -XPOST http://localhost:8080/api/document -F testFile=@/Users/rkrasowski/uebung_workspace/document-management/tikataka.txt
 ```
 
+Herunterladen eines Dokuments:
+``` im browser ausführen
+http://localhost:8080/api/documents?fileName=VmVybWVpdGVyYmVzY2hlaW5pZ3VuZy5wZGYK
+```
+
 
 mongofiles:
 =======

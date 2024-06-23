@@ -8,28 +8,35 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.richard.home.config.ApplicationPropertyConstants.DATABASE_NAME;
+import static org.richard.home.config.ApplicationPropertyConstants.MONGO_BUCKET_NAME;
+
 public class MongoStoreService implements DocumentService {
 
 
     private static final Logger log = LoggerFactory.getLogger(MongoStoreService.class);
     private GridFSBucket gridFSBucket;
-    private static final String BUCKET_NAME;
-    private static final String DATABASE;
+
+    private MongoClient mongoClient;
+    private static final String DATABASE, BUCKET_NAME;
 
     static {
-        DATABASE = Optional.ofNullable(System.getProperty("database")).orElse("test");
-        BUCKET_NAME = Optional.ofNullable(System.getProperty("bucketName")).orElse("documents");
-        log.info("database: {} and bucket name: {}", DATABASE, BUCKET_NAME);
+        DATABASE = Optional.ofNullable(System.getProperty(DATABASE_NAME)).orElse("test");
+        BUCKET_NAME = Optional.ofNullable(System.getProperty("bucket-name")).orElse("documents");
+        log.info("database: {} and bucket name: {}", DATABASE_NAME, MONGO_BUCKET_NAME);
     }
 
     public MongoStoreService(MongoClient mongoClient) {
-        gridFSBucket = GridFSBuckets.create(mongoClient.getDatabase(DATABASE), BUCKET_NAME);
+        this.mongoClient = mongoClient;
+        gridFSBucket = GridFSBuckets.create(this.mongoClient.getDatabase(DATABASE), BUCKET_NAME);
+
     }
 
     @Override
@@ -42,5 +49,12 @@ public class MongoStoreService implements DocumentService {
                 .metadata(new Document(new HashMap(Map.of("type", "mp4")
                 )));
         return this.gridFSBucket.uploadFromStream(fileName, in, gridFsOptions).toHexString();
+    }
+
+    @Override
+    public byte[] getDocument(String fileName) throws IOException {
+//        this.mongoClient.getDatabase(DATABASE).getCollection()
+
+        return gridFSBucket.openDownloadStream(fileName).readAllBytes();
     }
 }

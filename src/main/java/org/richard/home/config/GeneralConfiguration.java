@@ -37,7 +37,7 @@ import static org.hibernate.cfg.PersistenceSettings.*;
 @Configuration
 public class GeneralConfiguration {
     private static final Logger log = LoggerFactory.getLogger(GeneralConfiguration.class);
-    private final static String HOST, PORT, USERNAME, PASSWORD, DATABASE_NAME, MONGO_HOST, MONGO_PORT, MONGO_DB_NAME, MONGO_USERNAME, MONGO_PASSWORD;
+    private static String HOST, PORT, USERNAME, PASSWORD, DATABASE_NAME, MONGO_HOST, MONGO_PORT, MONGO_DB_NAME, MONGO_USERNAME, MONGO_PASSWORD, MONGO_BUCKET;
 
     static {
         Properties props = new Properties();
@@ -50,17 +50,18 @@ public class GeneralConfiguration {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
-        HOST = props.getProperty("database.db.host");
-        PORT = props.getProperty("database.db.port");
-        USERNAME = props.getProperty("database.db.username");
-        PASSWORD = props.getProperty("database.db.password");
-        DATABASE_NAME = props.getProperty("database.db.database_name");
+        GeneralConfiguration.HOST = props.getProperty(ApplicationPropertyConstants.HOST);
+        GeneralConfiguration.PORT = props.getProperty(ApplicationPropertyConstants.PORT);
+        GeneralConfiguration.USERNAME = props.getProperty(ApplicationPropertyConstants.USERNAME);
+        GeneralConfiguration.PASSWORD = props.getProperty(ApplicationPropertyConstants.PASSWORD);
+        GeneralConfiguration.DATABASE_NAME = props.getProperty(ApplicationPropertyConstants.DATABASE_NAME);
 
-        MONGO_HOST = props.getProperty("mongo.db.host");
-        MONGO_PORT = props.getProperty("mongo.db.port");
-        MONGO_DB_NAME = props.getProperty("mongo.db.name");
-        MONGO_USERNAME = props.getProperty("mongo.db.username");
-        MONGO_PASSWORD = props.getProperty("mongo.db.password");
+        GeneralConfiguration.MONGO_HOST = props.getProperty(ApplicationPropertyConstants.MONGO_HOST);
+        GeneralConfiguration.MONGO_PORT = props.getProperty(ApplicationPropertyConstants.MONGO_PORT);
+        GeneralConfiguration.MONGO_DB_NAME = props.getProperty(ApplicationPropertyConstants.MONGO_DB_NAME);
+        GeneralConfiguration.MONGO_BUCKET = props.getProperty(ApplicationPropertyConstants.MONGO_BUCKET_NAME);
+        GeneralConfiguration.MONGO_USERNAME = props.getProperty(ApplicationPropertyConstants.MONGO_USERNAME);
+        GeneralConfiguration.MONGO_PASSWORD = props.getProperty(ApplicationPropertyConstants.MONGO_PASSWORD);
     }
 
     public GeneralConfiguration() {
@@ -89,7 +90,7 @@ public class GeneralConfiguration {
     }
 
     @Bean
-    public MongoClient mongoClient(){
+    public MongoClient mongoClient() {
 
         return MongoClients.create(
                 MongoClientSettings.builder()
@@ -167,7 +168,7 @@ public class GeneralConfiguration {
             @Override
             public URL getPersistenceUnitRootUrl() {
                 try {
-                    return this.getClass().getClassLoader().getResource( "org/richard/home/domain").toURI().toURL();
+                    return this.getClass().getClassLoader().getResource("org/richard/home/domain").toURI().toURL();
                 } catch (MalformedURLException | URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
