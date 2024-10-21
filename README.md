@@ -47,7 +47,8 @@ Richard is best!
 
 upload document:
 ```
-curl -i -XPOST http://localhost:8080/api/document -T /Users/rkrasowski/uebung_workspace/document-management/README.md
+# multiform data upload
+curl -i -XPOST http://localhost:8080/api/documents -F testFile=@/Users/rkrasowski/uebung_workspace/document-management/tikataka.txt
 HTTP/1.1 100 Continue
 
 HTTP/1.1 200 OK
@@ -56,26 +57,55 @@ Content-Length: 0
 Server: Jetty(11.0.20)
 
 Alternative:
-curl -i -XPOST http://localhost:8080/api/document -F testFile=@/Users/rkrasowski/uebung_workspace/document-management/tikataka.txt
+
+# binary data in HTTP POST body
+curl -i -XPOST http://localhost:8080/api/documents/binary -H "Content-Type: application/octet-stream" -T /Users/rkrasowski/uebung_workspace/document-management/src/main/resources/application.properties -H "Filename: application.properties"
 ```
 
 Herunterladen eines Dokuments:
-``` im browser ausführen
+
+im browser ausführen
+``` 
 http://localhost:8080/api/documents?fileName=VmVybWVpdGVyYmVzY2hlaW5pZ3VuZy5wZGYK
 ```
+in terminal
+``` 
+curl -i -XGET http://localhost:8080/api/documents?fileName="11.svg" -o test.svg
+```
 
+docker:
+=======
+```
+docker run -dit --name mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=richard -e MONGO_INITDB_ROOT_PASSWORD=pelikan -e MONGO_INITDB_DATABASE=test mongo:4.4
+./mongosh -u richard -p pelikan mongodb://127.0.0.1:27017
+db.createUser({user: "richard",pwd: "pelikan", roles: [ {role: "dbAdmin", db: "test"} ] })
+admin> db.grantRolesToUser("richard",[{ role: "dbAdmin", db: "test"}])
+./mongosh -u richard -p pelikan mongodb://127.0.0.1:27017/test
+```
 
 mongofiles:
 =======
 ```
 ./mongofiles -v --uri mongodb://192.168.0.11:27017/test list --prefix documents
+mongofiles -u richard -p pelikan --authenticationDatabase admin -v --uri mongodb://127.0.0.1:27017/test list --prefix documents
 ./mongofiles -v --uri mongodb://192.168.0.11:27017/test get testfile.txt --prefix documents
+mongofiles -u richard -p pelikan --authenticationDatabase admin -v --uri mongodb://127.0.0.1:27017/test get 4.png --prefix documents
 mongofiles -v --uri mongodb://192.168.0.11:27017/test delete --prefix documents 'tikataka.txt'
 ```
 
 mongosh:
 =======
 ```
+./mongosh --username richard --password pelikan
 use test
 db.documents.files.find()
+db.documents.files.findOne({ _id: ObjectId("66fe5b443fbdf2296d5598e1") });
+{
+  _id: ObjectId('66fe5b443fbdf2296d5598e1'),
+  filename: '5.png',
+  length: Long('32'),
+  chunkSize: 1048576,
+  uploadDate: ISODate('2024-10-03T08:52:20.483Z'),
+  metadata: { type: 'mp4' }
+}
 ```

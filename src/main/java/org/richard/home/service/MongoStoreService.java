@@ -5,6 +5,7 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import org.bson.Document;
+import org.richard.home.config.GeneralConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.richard.home.config.ApplicationPropertyConstants.DATABASE_NAME;
-import static org.richard.home.config.ApplicationPropertyConstants.MONGO_BUCKET_NAME;
+import static org.richard.home.config.ApplicationPropertyConstants.*;
 
 public class MongoStoreService implements DocumentService {
 
@@ -46,7 +46,7 @@ public class MongoStoreService implements DocumentService {
         byteBuffer.clear();
         var gridFsOptions = new GridFSUploadOptions()
                 .chunkSizeBytes(1048576)
-                .metadata(new Document(new HashMap(Map.of("type", "mp4")
+                .metadata(new Document(new HashMap(Map.of("type", "png") //"mp4"
                 )));
         return this.gridFSBucket.uploadFromStream(fileName, in, gridFsOptions).toHexString();
     }
@@ -55,6 +55,11 @@ public class MongoStoreService implements DocumentService {
     public byte[] getDocument(String fileName) throws IOException {
 //        this.mongoClient.getDatabase(DATABASE).getCollection()
 
-        return gridFSBucket.openDownloadStream(fileName).readAllBytes();
+        try (InputStream in = gridFSBucket.openDownloadStream(fileName)){
+            return in.readAllBytes();
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return null;
+        }
     }
 }

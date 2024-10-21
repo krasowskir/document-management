@@ -49,16 +49,20 @@ public class DocumentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         prefix = req.getParameter(PREFIX);
 
-        fileName = new String(java.util.Base64.getDecoder().decode(req.getParameter(FILE_NAME))).replaceAll("\\n", "");
+        fileName = new String(req.getParameter(FILE_NAME));
         log.info("doGet hit with fileName: {} and prefix: {}", fileName, prefix);
         var document = documentService.getDocument(fileName);
 
+        log.info("document was: {} byte long", document.length);
         resp.setContentType("application/octet-stream");
         resp.setContentLength(document.length);
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         try (OutputStream out = resp.getOutputStream()){
             out.write(document);
+            out.flush();
         }
+        log.info("finished transferring file!");
+
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static java.lang.String.format;
 
@@ -58,7 +59,9 @@ class MongoStoreServiceIT {
         var objectUnderTest = new MongoStoreService(mongoClient);
 
         //when
-        objectUnderTest.uploadDocument(this.getClass().getClassLoader().getResource("files/myFile.txt").openStream(),"myFile.txt");
+        try (InputStream in = this.getClass().getClassLoader().getResource("files/myFile.txt").openStream()){
+            objectUnderTest.uploadDocument(in,"myFile.txt");
+        }
 
         //then
         Thread t1 = new Thread(() -> {

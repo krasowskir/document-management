@@ -2,6 +2,7 @@ package org.richard.home.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,8 @@ class GeneralConfigurationTest {
                 MongoClientSettings.builder()
                         .applyConnectionString(
                                 new ConnectionString(
-                                        format("mongodb://%s:%s@%s:%s/%s", USERNAME, PASSWORD, MONGO_HOST, MONGO_PORT, MONGO_DB_NAME)))
+                                        format("mongodb://%s:%s", MONGO_HOST, MONGO_PORT)))
+                        .credential(MongoCredential.createCredential(USERNAME, "admin", PASSWORD.toCharArray()))
                         .build()
         )) {
             client.listDatabaseNames().iterator().forEachRemaining(elem -> System.out.println("database: " + elem));

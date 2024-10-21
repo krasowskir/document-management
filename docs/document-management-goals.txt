@@ -13,6 +13,7 @@ features:
   - Berechnungsmodul
 
 Nutzerziele:
+  - eigene persönliche Dokumentenablage (login und Mandantentrennung) [docs/mandanten.svg](multi Mandanten fähig)
   - Kalender mit nächsten Abgasuntersuchungen/Reparaturen
   - Digitale Handhabung und Aufbewahrung der Reparaturdokumente als Nachweise
   - Kostenberechnung Analyse & graf Darstellung der Kosten
@@ -41,6 +42,22 @@ features:
     - Reparaturen von Türen und Schlossanlagen
     - Ereignisse & Vorfälle
 
+Optical Character Recognition
+=============================
+Allgemein:
+ - Gebiet der Pattern Erkennung
+ - muss trainiert werden
+ - besteht aus einer lib und einer CLI und braucht einen JNA Wrapper (API)
+ - muss kompiliert werden
+
+Parameter:
+ - unterschiedliche image Eingabe Formate
+ - Verbesserung der Bilder nötig
+ - Trainieren um andere Sprachen zu unterstützen
+
+
+Links:
+  https://tesseract-ocr.github.io/tessdoc/Compiling
 
 Dokumentarten:
   Vermieter -> Mieter

@@ -1,10 +1,6 @@
 package org.richard.home.config;
 
 public class ApplicationPropertyConstants {
-    public final static String HOST = "database.db.host";
-    public final static String PORT = "database.db.port";
-    public final static String USERNAME = "database.db.username";
-    public final static String PASSWORD = "database.db.password";
     public final static String DATABASE_NAME = "database.db.database_name";
 
     // Mongo
