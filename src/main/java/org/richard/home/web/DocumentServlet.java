@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class DocumentServlet extends HttpServlet {
 
     private static final String PREFIX = "prefix";
     private static final String FILE_NAME = "fileName";
-    private String fileName, prefix;
+    private static final String OBJECT_ID_QUERY_PARAM = "objectId";
     private DocumentService documentService;
     Function<Part, String> extractFileNameFromHeader = elem ->
             Arrays.stream(elem.getHeader("Content-Disposition")
@@ -47,21 +48,36 @@ public class DocumentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        prefix = req.getParameter(PREFIX);
+        try {
+            var fileName = req.getParameter(FILE_NAME);
+            byte[] document = null;
+            if (fileName == null) {
+                var objectId = Objects.requireNonNull(req.getParameter(OBJECT_ID_QUERY_PARAM));
+                if (objectId.isBlank()) {
+                    throw new IllegalArgumentException("fileName or objectId needs to be provided to obtain a file!");
+                } else {
+                    log.info("doGet hit with fileName: {} and objectId: {}", null, objectId);
+                    document = documentService.getDocumentByObjectId(objectId);
+                }
+            } else {
+                log.info("doGet hit with fileName: {} and objectId: {}", fileName, null);
+                document = documentService.getDocument(fileName);
+            }
 
-        fileName = new String(req.getParameter(FILE_NAME));
-        log.info("doGet hit with fileName: {} and prefix: {}", fileName, prefix);
-        var document = documentService.getDocument(fileName);
-
-        log.info("document was: {} byte long", document.length);
-        resp.setContentType("application/octet-stream");
-        resp.setContentLength(document.length);
-        resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        try (OutputStream out = resp.getOutputStream()){
-            out.write(document);
-            out.flush();
+            log.info("document was: {} byte long", document.length);
+            resp.setContentType("application/octet-stream");
+            resp.setContentLength(document.length);
+            resp.setHeader("Content-Disposition", "attachment; filename=logo");
+            try (OutputStream out = resp.getOutputStream()) {
+                out.write(document);
+                out.flush();
+            }
+            log.info("finished transferring file!");
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getOutputStream().println(e.getMessage());
+            resp.getOutputStream().flush();
         }
-        log.info("finished transferring file!");
 
     }
 

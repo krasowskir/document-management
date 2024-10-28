@@ -5,6 +5,7 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.richard.home.config.GeneralConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.richard.home.config.ApplicationPropertyConstants.*;
@@ -56,6 +58,19 @@ public class MongoStoreService implements DocumentService {
 //        this.mongoClient.getDatabase(DATABASE).getCollection()
 
         try (InputStream in = gridFSBucket.openDownloadStream(fileName)){
+            return in.readAllBytes();
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+
+    @Override
+    public byte[] getDocumentByObjectId(String objectId) {
+        var validObjectIdAsText = Objects.requireNonNull(objectId.trim());
+        log.info("validated objectId: {}", validObjectIdAsText);
+        try (InputStream in = gridFSBucket.openDownloadStream(new ObjectId(validObjectIdAsText))){
             return in.readAllBytes();
         } catch (Exception e){
             log.error(e.getMessage());

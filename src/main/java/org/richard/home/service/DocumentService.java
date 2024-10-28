@@ -9,4 +9,6 @@ public interface DocumentService {
     String uploadDocument(InputStream in, String fileName) ;
 
     byte[] getDocument(String fileName) throws IOException;
+
+    byte[] getDocumentByObjectId(String objectId);
 }

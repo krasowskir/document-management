@@ -70,7 +70,8 @@ http://localhost:8080/api/documents?fileName=VmVybWVpdGVyYmVzY2hlaW5pZ3VuZy5wZGY
 ```
 in terminal
 ``` 
-curl -i -XGET http://localhost:8080/api/documents?fileName="11.svg" -o test.svg
+curl -XGET http://localhost:8080/api/documents?fileName="11.svg" -o test.svg
+curl -XGET http://localhost:8080/api/documents?objectId="671face051ea4103c0d9decb" -o test2.svg
 ```
 
 docker:
