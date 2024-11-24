@@ -123,6 +123,13 @@
             <version>4.11.2</version>
         </dependency>
 
+        <!--        kafka-->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>3.9.0</version>
+        </dependency>
+
         <!--    TEST DEPENDENCIES-->
         <dependency>
             <groupId>io.rest-assured</groupId>

@@ -48,7 +48,8 @@ Allgemein:
  - Gebiet der Pattern Erkennung
  - muss trainiert werden
  - besteht aus einer lib und einer CLI und braucht einen JNA Wrapper (API)
- - muss kompiliert werden
+ - muss kompiliert werden (mac anders als linux)
+ - auf mac müssen viele neue Pakete installiert werden (inklusive xcode-select --install) => kein Platz!
 
 Parameter:
  - unterschiedliche image Eingabe Formate
@@ -65,3 +66,7 @@ Dokumentarten:
     - Nebenkostenauskunft
     - Übergabeprotokoll
     - Mietvertrag
+
+Probleme:
+  - installieren der tesseract lib auf linux (OS zu alt, Paketquellen existieren nicht mehr)
+  - upgrade OS gescheitert

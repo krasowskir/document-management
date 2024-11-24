@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static java.lang.String.format;
+import static org.mockito.Mockito.mock;
 
 @Testcontainers
 class MongoStoreServiceIT {
@@ -31,8 +32,12 @@ class MongoStoreServiceIT {
     private static String MONGO_DB_NAME = "testDB";
     private static MongoDatabase mongoDatabase;
 
+    private EventPublisherService eventPublisherService = mock(EventPublisherService.class);
+
     @Container
     public GenericContainer mongo = new MongoDBContainer(DockerImageName.parse("mongo:4.4.29"));
+
+
 
 
     @BeforeEach
@@ -48,6 +53,7 @@ class MongoStoreServiceIT {
 
         mongoDatabase = mongoClient.getDatabase(MONGO_DB_NAME);
         testGridFsClient = GridFSBuckets.create(mongoClient.getDatabase(MONGO_DB_NAME), BUCKET_NAME);
+
     }
 
 
@@ -56,7 +62,7 @@ class MongoStoreServiceIT {
         //given
         System.setProperty("database", MONGO_DB_NAME);
         System.setProperty("bucketName", BUCKET_NAME);
-        var objectUnderTest = new MongoStoreService(mongoClient);
+        var objectUnderTest = new MongoStoreService(mongoClient, eventPublisherService);
 
         //when
         try (InputStream in = this.getClass().getClassLoader().getResource("files/myFile.txt").openStream()){
